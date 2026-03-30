@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Yuvank© — Short-Form Video Editor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ============================================================
+   EXACT JORGE TEMPLATE — DESIGN TOKENS FROM FRAMER SOURCE
+   --token-bg:      #0f0f0f
+   --token-white:   #fff
+   --token-border:  #1a1a1a
+   --token-muted:   #a6a6a6
+   Font: Inter, weight 500, letter-spacing -0.06em, UPPERCASE
+   Hero: 132px / 110px / 56px
+   Section h2: 48px / 40px / 32px
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #0f0f0f;
+  --white:   #ffffff;
+  --border:  #1a1a1a;
+  --muted:   #a6a6a6;
+  --sans:    'Inter', sans-serif;
+}
+
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--sans);
+  font-size: 15px;
+  overflow-x: hidden;
+}
+
+/* ---- SCROLLBAR ---- */
+::-webkit-scrollbar { width: 0; }
+
+/* ---- LENIS SMOOTH SCROLL ---- */
+html.lenis { height: auto; }
+
+/* ======================================================
+   NAV
+====================================================== */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  height: 58px;
+}
+.nav-inner {
+  max-width: 1920px; margin: 0 auto; padding: 0 40px;
+  height: 100%;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo-wrap { display: flex; flex-direction: column; gap: 0; }
+.nav-logo {
+  font-size: 15px; font-weight: 500; letter-spacing: -0.04em;
+  color: var(--white); text-decoration: none; line-height: 1.2;
+  cursor: pointer;
+}
+.nav-location {
+  font-size: 11px; font-weight: 400; letter-spacing: 0.04em;
+  color: var(--muted); text-transform: lowercase; line-height: 1;
+}
+.nav-links {
+  display: flex; align-items: center; gap: 24px;
+  list-style: none;
+}
+.nav-link {
+  font-size: 15px; font-weight: 500; letter-spacing: -0.04em;
+  color: var(--white); text-decoration: none; cursor: pointer;
+  transition: color 0.1s ease;
+  text-transform: uppercase;
+  font-feature-settings: "ss07" on;
+}
+.nav-link:hover, .nav-link.dim { color: var(--muted); }
+.nav-cta {
+  font-size: 15px; font-weight: 500; letter-spacing: -0.04em;
+  color: var(--white); text-decoration: none; cursor: pointer;
+  transition: color 0.1s ease;
+  text-transform: uppercase;
+}
+.nav-cta:hover { color: var(--muted); }
+.nav-mobile-btn {
+  display: none; background: none; border: none;
+  color: var(--white); font-family: var(--sans);
+  font-size: 15px; font-weight: 500;
+  letter-spacing: -0.04em; text-transform: uppercase;
+  cursor: pointer;
+}
+
+/* ======================================================
+   MOBILE MENU
+====================================================== */
+.mobile-menu {
+  display: none; position: fixed; inset: 0; z-index: 200;
+  background: var(--bg);
+  flex-direction: column; align-items: flex-start;
+  justify-content: center; padding: 40px;
+  gap: 4px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-close {
+  position: absolute; top: 20px; right: 40px;
+  background: none; border: none; color: var(--white);
+  font-family: var(--sans); font-size: 15px; font-weight: 500;
+  letter-spacing: -0.04em; text-transform: uppercase; cursor: pointer;
+}
+.mobile-nav-link {
+  font-size: 48px; font-weight: 500; letter-spacing: -0.06em;
+  color: var(--white); text-decoration: none;
+  text-transform: uppercase; cursor: pointer;
+  transition: color 0.15s;
+  line-height: 1.1;
+}
+.mobile-nav-link:hover { color: var(--muted); }
+
+/* ======================================================
+   MAIN CONTAINER
+====================================================== */
+#main { padding-top: 58px; }
+
+/* ======================================================
+   PAGE SYSTEM
+====================================================== */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ======================================================
+   HOME — HERO  (sticky 100vh scroll effect)
+====================================================== */
+.hero-wrapper {
+  position: relative;
+}
+.hero-sticky {
+  position: sticky; top: 58px;
+  height: calc(100vh - 58px);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  place-content: center;
+  align-items: center;
+}
+.hero-content {
+  max-width: 1920px; width: 100%;
+  padding: 0 40px;
+  display: flex; flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  pointer-events: none;
+  position: relative; z-index: 1;
+}
+.hero-title {
+  font-size: 132px; font-weight: 500;
+  letter-spacing: -0.06em; line-height: 100%;
+  text-transform: uppercase;
+  text-align: center;
+  font-feature-settings: "ss07" on;
+  color: var(--white);
+}
+.hero-sub {
+  font-size: 15px; font-weight: 500;
+  letter-spacing: -0.04em; line-height: 120%;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--muted);
+  font-feature-settings: "ss07" on;
+  max-width: 600px;
+}
+/* scroll spacer so sticky hero stays visible while scrolling */
+.hero-spacer { height: 100vh; }
+
+/* ======================================================
+   SECTION LAYOUT
+====================================================== */
+.section {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  position: relative; z-index: 2;
+}
+.section-inner {
+  max-width: 1920px; margin: 0 auto;
+  padding: 80px 40px;
+  display: flex; flex-direction: column;
+  align-items: flex-start; gap: 20px;
+}
+.section-header {
+  display: flex; align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+}
+.section-title {
+  font-size: 48px; font-weight: 500;
+  letter-spacing: -0.06em; line-height: 100%;
+  text-transform: uppercase;
+  font-feature-settings: "ss07" on;
+  color: var(--white);
+}
+.section-see-all {
+  font-size: 15px; font-weight: 500;
+  letter-spacing: -0.04em;
+  color: var(--muted); text-decoration: none;
+  text-transform: uppercase; cursor: pointer;
+  transition: color 0.1s;
+  white-space: nowrap; padding: 4px 0;
+  display: flex; align-items: center; gap: 6px;
+}
+.section-see-all:hover { color: var(--white); }
+.section-see-all::after { content: '↗'; font-size: 13px; }
+
+/* ======================================================
+   WORKS GRID  (2-col, aspect 0.8)
+====================================================== */
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(50px, 1fr));
+  gap: 60px 20px;
+  width: 100%;
+}
+.work-card {
+  display: flex; flex-direction: column;
+  gap: 10px; cursor: pointer;
+  text-decoration: none; color: var(--white);
+}
+.work-thumb {
+  width: 100%; aspect-ratio: 0.8;
+  overflow: hidden; position: relative;
+  background: #1a1a1a;
+}
+.work-thumb-img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
+  display: flex; align-items: center; justify-content: center;
+}
+.work-card:hover .work-thumb-img { transform: scale(1.04); }
+.work-thumb-bg {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+
+/* Play button */
+.play-btn {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 56px; height: 56px;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.25s; z-index: 2;
+  backdrop-filter: blur(4px);
+  background: rgba(0,0,0,0.15);
+}
+.play-btn::after {
+  content: '';
+  width: 0; height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: 14px solid rgba(255,255,255,0.7);
+  margin-left: 3px;
+  transition: border-left-color 0.2s;
+}
+.work-card:hover .play-btn {
+  border-color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.1);
+}
+.work-card:hover .play-btn::after { border-left-color: #fff; }
+
+.work-info {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 10px;
+  flex-wrap: wrap;
+}
+.work-title {
+  font-size: 18px; font-weight: 500;
+  letter-spacing: -0.06em; line-height: 100%;
+  text-transform: uppercase;
+  font-feature-settings: "ss07" on;
+}
+.work-sub {
+  font-size: 15px; font-weight: 400;
+  letter-spacing: -0.04em; line-height: 120%;
+  color: var(--muted); text-transform: uppercase;
+  font-feature-settings: "ss07" on;
+}
+.work-arrow {
+  font-size: 16px; color: var(--muted);
+  transition: transform 0.2s, color 0.2s;
+  flex-shrink: 0; margin-top: 2px;
+}
+.work-card:hover .work-arrow { color: var(--white); transform: translate(3px,-3px); }
+
+/* Thumb gradients */
+.t-ugc     { background: linear-gradient(145deg,#2C1A10,#100806); }
+.t-shorts  { background: linear-gradient(145deg,#0A1220,#040810); }
+.t-fitness { background: linear-gradient(145deg,#0D1A0D,#050D05); }
+.t-podcast { background: linear-gradient(145deg,#1C1510,#0D0906); }
+.t-collab  { background: linear-gradient(145deg,#1A0E1A,#0A060A); }
+.t-brand   { background: linear-gradient(145deg,#1A1000,#0A0800); }
+
+/* ======================================================
+   SERVICES / PACKAGES SECTION
+   3-column grid (2 on tablet, 1 on mobile)
+====================================================== */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(50px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+.service-card {
+  display: flex; flex-direction: column;
+  gap: 0; cursor: pointer; text-decoration: none; color: var(--white);
+}
+.service-thumb {
+  width: 100%; aspect-ratio: 0.8;
+  overflow: hidden; position: relative;
+  background: #1a1a1a;
+}
+.service-thumb-inner {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.service-card:hover .service-thumb-inner { transform: scale(1.04); }
+.service-body {
+  padding: 16px 0; display: flex; flex-direction: column; gap: 8px;
+  border-top: 1px solid var(--border);
+}
+.service-header {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;
+}
+.service-title {
+  font-size: 18px; font-weight: 500;
+  letter-spacing: -0.06em; line-height: 100%;
+  text-transform: uppercase;
+  font-feature-settings: "ss07" on;
+}
+.service-price {
+  font-size: 18px; font-weight: 500;
+  letter-spacing: -0.06em; line-height: 100%;
+  text-transform: uppercase;
+  font-feature-settings: "ss07" on;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.service-featured .service-price { color: var(--white); }
+.service-desc {
+  font-size: 15px; font-weight: 400;
+  letter-spacing: -0.04em; line-height: 120%;
+  color: var(--muted);
+}
+.service-tags {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px;
+}
+.service-tag {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--muted);
+  border: 1px solid var(--border); border-radius: 100px;
+  padding: 4px 12px;
+}
+.service-cta {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 15px; font-weight: 500;
+  letter-spacing: -0.04em; text-transform: uppercase;
+  color: var(--white); text-decoration: none; cursor: pointer;
+  margin-top: 8px; transition: color 0.1s;
+}
+.service-cta:hover { color: var(--muted); }
+
+/* ======================================================
+   ABOUT SECTION
+====================================================== */
+.about-cols {
+  display: flex; align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px; width: 100%;
+}
+.about-col-left {
+  display: flex; flex-direction: column;
+  gap: 40px; flex: 1; max-width: 680px;
+}
+.about-block { display: flex; flex-direction: column; gap: 4px; }
+.about-label {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--muted);
+}
+.about-text {
+  font-size: 18px; font-weight: 400;
+  letter-spacing: -0.04em; line-height: 120%;
+  color: var(--white);
+}
+.about-career {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.career-item {
+  display: flex; gap: 4px;
+  font-size: 18px; font-weight: 400;
+  letter-spacing: -0.04em; line-height: 120%;
+}
+.career-year { color: var(--muted); white-space: nowrap; flex: 0 0 140px; }
+.career-role { color: var(--white); }
+.about-col-right {
+  flex: 0.25; min-width: 180px;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 16px;
+}
+.about-portrait {
+  width: 100%; aspect-ratio: 0.8;
+  overflow: hidden; position: relative;
+  background: #1a1a1a;
+}
+.about-portrait-placeholder {
+  width: 100%; height: 100%;
+  background: linear-gradient(160deg,#2a1f18,#1a1410);
+  display: flex; align-items: flex-end; justify-content: flex-start;
+  padding: 16px;
+}
+.about-portrait-hint {
+  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+}
+
+/* ======================================================
+   STATS ROW
+====================================================== */
+.stats-row {
+  display: flex; gap: 0; width: 100%;
+  border-top: 1px solid var(--border);
+}
+.stat-item {
+  flex: 1; padding: 40px;
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 8px;
+}
+.stat-item:last-child { border-right: none; }
+.stat-num {
+  font-size: 48px; font-weight: 500;
+  letter-spacing: -0.06em; line-height: 100%;
+  text-transform: uppercase;
+  font-feature-settings: "ss07" on;
+  color: var(--white);
+}
+.stat-label {
+  font-size: 15px; font-weight: 500;
+  letter-spacing: -0.04em; text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ======================================================
+   FOOTER
+====================================================== */
+.footer {
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  position: relative; z-index: 2;
+}
+.footer-cta-section {
+  max-width: 1920px; margin: 0 auto;
+  padding: 60px 40px 40px;
+  display: flex; flex-direction: column; gap: 80px;
+}
+.footer-cta-top {
+  display: flex; align-items: flex-end;
+  justify-content: space-between; flex-wrap: wrap; gap: 24px;
+}
+.footer-cta-links {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 24px;
+}
+.footer-cta-link {
+  font-size: 15px; font-weight: 500;
+  letter-spacing: -0.04em; text-transform: uppercase;
+  color: var(--white); text-decoration: none; cursor: pointer;
+  transition: color 0.1s; padding: 4px 0;
+}
+.footer-cta-link:hover { color: var(--muted); }
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  flex-wrap: wrap; gap: 16px;
+}
+.footer-copy {
+  font-size: 15px; font-weight: 500;
+  letter-spacing: -0.04em; text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ======================================================
+   PAGE HERO (Works / Contact pages)
+====================================================== */
+.page-hero {
+  max-width: 1920px; margin: 0 auto;
+  padding: 80px 40px;
+  border-bottom: 1px solid var(--border);
+}
+.page-hero-title {
+  font-size: 132px; font-weight: 500;
+  letter-spacing: -0.06em; line-height: 100%;
+  text-transform: uppercase;
+  font-feature-settings: "ss07" on;
+  color: var(--white);
+}
+.page-hero-sub {
+  font-size: 15px; font-weight: 400;
+  letter-spacing: -0.04em; line-height: 120%;
+  color: var(--muted); margin-top: 20px;
+  max-width: 480px;
+}
+
+/* ======================================================
+   CONTACT PAGE
+====================================================== */
+.contact-layout {
+  max-width: 1920px; margin: 0 auto;
+  padding: 80px 40px;
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 40px;
+  flex-wrap: wrap;
+}
+.contact-left {
+  flex: 1; min-width: 260px;
+  display: flex; flex-direction: column; gap: 60px;
+  max-width: 680px;
+}
+.contact-group { display: flex; flex-direction: column; gap: 4px; }
+.contact-group-label {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.contact-item {
+  font-size: 18px; font-weight: 400;
+  letter-spacing: -0.04em; line-height: 120%;
+  color: var(--white); text-decoration: none; cursor: pointer;
+  display: block; transition: color 0.1s;
+}
+.contact-item:hover { color: var(--muted); }
+.contact-right {
+  flex: 0.25; min-width: 200px;
+  position: relative; overflow: hidden;
+  background: #1a1a1a;
+  aspect-ratio: 0.8;
+  min-height: 400px;
+}
+.contact-photo {
+  width: 100%; height: 100%;
+  background: linear-gradient(160deg,#2a1f18,#1a1410);
+  display: flex; align-items: flex-end; padding: 20px;
+  filter: blur(0);
+  transition: filter 0.3s;
+}
+.contact-photo-text {
+  font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+}
+
+/* ======================================================
+   ANIMATIONS
+====================================================== */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.anim { opacity: 0; }
+.anim.visible {
+  animation: fadeSlideUp 0.7s cubic-bezier(0.12,0.23,0.13,0.96) both;
+}
+.anim.d1 { animation-delay: 0.05s; }
+.anim.d2 { animation-delay: 0.12s; }
+.anim.d3 { animation-delay: 0.22s; }
+.anim.d4 { animation-delay: 0.34s; }
+
+/* hero separate */
+@keyframes heroSlideDown {
+  from { opacity: 0; transform: translateY(-120px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-title {
+  animation: heroSlideDown 1.2s cubic-bezier(0,0.4,0.4,1) both;
+}
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(50px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-sub {
+  animation: heroFadeUp 0.7s cubic-bezier(0.12,0.23,0.13,0.96) 1.7s both;
+}
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+@media (max-width: 1199px) {
+  .hero-title, .page-hero-title { font-size: 110px; }
+  .services-grid { grid-template-columns: repeat(2, minmax(50px, 1fr)); }
+}
+@media (max-width: 809px) {
+  .nav-inner { padding: 0 20px; }
+  .nav-links { display: none; }
+  .nav-cta { display: none; }
+  .nav-mobile-btn { display: block; }
+  .hero-title, .page-hero-title { font-size: 56px; }
+  .hero-content { padding: 0 20px; }
+  .section-inner, .footer-cta-section, .contact-layout, .page-hero { padding-left: 20px; padding-right: 20px; }
+  .works-grid, .services-grid { grid-template-columns: repeat(1, minmax(50px, 1fr)); }
+  .section-title { font-size: 32px; }
+  .about-cols { flex-direction: column; }
+  .about-col-right { width: 100%; }
+  .stats-row { flex-direction: column; }
+  .stat-item { border-right: none; border-bottom: 1px solid var(--border); padding: 24px 20px; }
+  .stat-num { font-size: 36px; }
+  .footer-cta-top { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- ====== MOBILE MENU ====== -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="menuClose">Close</button>
+  <a class="mobile-nav-link" onclick="nav('home')">Home</a>
+  <a class="mobile-nav-link" onclick="nav('works')">Works</a>
+  <a class="mobile-nav-link" onclick="nav('packages')">Packages</a>
+  <a class="mobile-nav-link" onclick="nav('contact')">Contact</a>
+</div>
+
+<!-- ====== NAV ====== -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-logo-wrap">
+      <a class="nav-logo" onclick="nav('home')">Yuvank©</a>
+      <span class="nav-location">pune</span>
+    </div>
+    <ul class="nav-links">
+      <li><a class="nav-link" id="nl-home"     onclick="nav('home')">Home</a></li>
+      <li><a class="nav-link" id="nl-works"    onclick="nav('works')">Works</a></li>
+      <li><a class="nav-link" id="nl-packages" onclick="nav('packages')">Packages</a></li>
+      <li><a class="nav-link" id="nl-contact"  onclick="nav('contact')">Contact</a></li>
+    </ul>
+    <a class="nav-cta" onclick="nav('contact')">Book a Call</a>
+    <button class="nav-mobile-btn" id="menuOpen">Menu</button>
+  </div>
+</nav>
+
+<!-- ====== MAIN ====== -->
+<div id="main">
+
+  <!-- ==================== HOME ==================== -->
+  <div class="page active" id="page-home">
+
+    <!-- HERO -->
+    <div class="hero-wrapper">
+      <div class="hero-sticky">
+        <div class="hero-content">
+          <h1 class="hero-title">Yuvank</h1>
+          <p class="hero-sub">Short-Form Video Editor — Pune</p>
+        </div>
+      </div>
+      <div class="hero-spacer"></div>
+    </div>
+
+    <!-- SELECTED WORKS -->
+    <div class="section">
+      <div class="section-inner">
+        <div class="section-header">
+          <h2 class="section-title anim d1">Selected Works</h2>
+          <a class="section-see-all anim d2" onclick="nav('works')">See all works</a>
+        </div>
+        <div class="works-grid">
+
+          <a class="work-card anim d1" onclick="nav('works')">
+            <div class="work-thumb">
+              <div class="work-thumb-bg t-ugc">
+                <div class="play-btn"></div>
+              </div>
+            </div>
+            <div class="work-info">
+              <div>
+                <div class="work-title">UGC Ads</div>
+                <div class="work-sub">Product storytelling that converts</div>
+              </div>
+              <span class="work-arrow">↗</span>
+            </div>
+          </a>
+
+          <a class="work-card anim d2" onclick="nav('works')">
+            <div class="work-thumb">
+              <div class="work-thumb-bg t-shorts">
+                <div class="play-btn"></div>
+              </div>
+            </div>
+            <div class="work-info">
+              <div>
+                <div class="work-title">YouTube Shorts</div>
+                <div class="work-sub">Hook-driven content for growth</div>
+              </div>
+              <span class="work-arrow">↗</span>
+            </div>
+          </a>
+
+          <a class="work-card anim d3" onclick="nav('works')">
+            <div class="work-thumb">
+              <div class="work-thumb-bg t-fitness">
+                <div class="play-btn"></div>
+              </div>
+            </div>
+            <div class="work-info">
+              <div>
+                <div class="work-title">Fitness Reels</div>
+                <div class="work-sub">High-energy cuts that inspire</div>
+              </div>
+              <span class="work-arrow">↗</span>
+            </div>
+          </a>
+
+          <a class="work-card anim d4" onclick="nav('works')">
+            <div class="work-thumb">
+              <div class="work-thumb-bg t-podcast">
+                <div class="play-btn"></div>
+              </div>
+            </div>
+            <div class="work-info">
+              <div>
+                <div class="work-title">Podcast Clips</div>
+                <div class="work-sub">Audiograms & talking head edits</div>
+              </div>
+              <span class="work-arrow">↗</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </div><!-- /section -->
+
+    <!-- PACKAGES / SERVICES -->
+    <div class="section">
+      <div class="section-inner">
+        <div class="section-header">
+          <h2 class="section-title anim d1">Editing Packages</h2>
+          <a class="section-see-all anim d2" onclick="nav('packages')">See all packages</a>
+        </div>
+        <div class="services-grid">
+
+          <div class="service-card anim d1">
+            <div class="service-thumb">
+              <div class="service-thumb-inner t-ugc"></div>
+            </div>
+            <div class="service-body">
+              <div class="service-header">
+                <span class="service-title">Starter</span>
+                <span class="service-price">₹ 8,999</span>
+              </div>
+              <p class="service-desc">Clean, punchy edits with captions that hook viewers in the first 3 seconds. Perfect for creators just getting started.</p>
+              <div class="service-tags">
+                <span class="service-tag">30 Videos</span>
+                <span class="service-tag">Captions</span>
+                <span class="service-tag">3 Revisions</span>
+              </div>
+              <a class="service-cta" onclick="nav('contact')">Order Now →</a>
+            </div>
+          </div>
+
+          <div class="service-card service-featured anim d2">
+            <div class="service-thumb">
+              <div class="service-thumb-inner t-shorts"></div>
+            </div>
+            <div class="service-body">
+              <div class="service-header">
+                <span class="service-title">Growth</span>
+                <span class="service-price">₹ 15,000</span>
+              </div>
+              <p class="service-desc">Retention-optimised edits with strategic pacing and better hooks. Built for consistent algorithmic growth.</p>
+              <div class="service-tags">
+                <span class="service-tag">30 Reels / 30 Days</span>
+                <span class="service-tag">Captions + Pacing</span>
+                <span class="service-tag">Better Hooks</span>
+              </div>
+              <a class="service-cta" onclick="nav('contact')">Order Now →</a>
+            </div>
+          </div>
+
+          <div class="service-card anim d3">
+            <div class="service-thumb">
+              <div class="service-thumb-inner t-fitness"></div>
+            </div>
+            <div class="service-body">
+              <div class="service-header">
+                <span class="service-title">Pro</span>
+                <span class="service-price">₹ 30,000</span>
+              </div>
+              <p class="service-desc">Full creative partnership. Script strategy, reference-based direction, and two polished revisions per reel.</p>
+              <div class="service-tags">
+                <span class="service-tag">30 Reels</span>
+                <span class="service-tag">Script + References</span>
+                <span class="service-tag">2 Revisions</span>
+              </div>
+              <a class="service-cta" onclick="nav('contact')">Order Now →</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- /section -->
+
+    <!-- ABOUT -->
+    <div class="section">
+      <div class="section-inner">
+        <h2 class="section-title anim d1">About me</h2>
+        <div class="about-cols">
+          <div class="about-col-left">
+            <div class="about-block anim d1">
+              <span class="about-label">What I do</span>
+              <p class="about-text">I help creators and brands cut through the noise with short-form video that's built to retain, engage, and convert.</p>
+            </div>
+            <div class="about-block anim d2">
+              <span class="about-label">My background</span>
+              <p class="about-text">Based in Pune, I've spent years studying what makes people stop scrolling — and building that into every edit I deliver.</p>
+            </div>
+            <div class="about-block anim d3">
+              <span class="about-label">My approach</span>
+              <p class="about-text">Good editing starts with understanding the algorithm, the audience, and the message. I listen first, then cut.</p>
+            </div>
+            <div class="about-career anim d4">
+              <div class="career-item">
+                <span class="career-year">(2020 – 2021)</span>
+                <span class="career-role">Freelance Editor</span>
+              </div>
+              <div class="career-item">
+                <span class="career-year">(2021 – 2022)</span>
+                <span class="career-role">Creator Collaborations</span>
+              </div>
+              <div class="career-item">
+                <span class="career-year">(2022 – 2023)</span>
+                <span class="career-role">Brand Video Lead</span>
+              </div>
+              <div class="career-item">
+                <span class="career-year">(2023 – Now)</span>
+                <span class="career-role">Independent Video Editor</span>
+              </div>
+            </div>
+          </div>
+          <div class="about-col-right">
+            <div class="about-portrait">
+              <div class="about-portrait-placeholder">
+                <span class="about-portrait-hint">Add your photo here</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /section -->
+
+    <!-- STATS -->
+    <div class="section" style="padding: 0;">
+      <div class="stats-row" style="max-width:1920px;margin:0 auto;">
+        <div class="stat-item anim d1">
+          <span class="stat-num">120+</span>
+          <span class="stat-label">Reels Edited</span>
+        </div>
+        <div class="stat-item anim d2">
+          <span class="stat-num">50M+</span>
+          <span class="stat-label">Total Views</span>
+        </div>
+        <div class="stat-item anim d3">
+          <span class="stat-num">20+</span>
+          <span class="stat-label">Clients Worked With</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-cta-section">
+        <div class="footer-cta-top">
+          <h2 class="section-title" style="max-width:600px;">
+            <a onclick="nav('contact')" style="color:var(--white);text-decoration:none;cursor:pointer;transition:color 0.1s;" onmouseover="this.style.color='var(--muted)'" onmouseout="this.style.color='var(--white)'">Get in touch</a>
+          </h2>
+          <div class="footer-cta-links">
+            <a class="footer-cta-link" href="mailto:hi@yuvank.com">Email</a>
+            <a class="footer-cta-link" href="#">Instagram</a>
+            <a class="footer-cta-link" href="#">WhatsApp</a>
+            <a class="footer-cta-link" href="#">YouTube</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span class="footer-copy">©2026</span>
+          <span class="footer-copy">Yuvank© — Short-Form Video Editor · Pune, India</span>
+        </div>
+      </div>
+    </footer>
+
+  </div><!-- /page-home -->
+
+  <!-- ==================== WORKS ==================== -->
+  <div class="page" id="page-works">
+    <div class="page-hero">
+      <h1 class="page-hero-title">Works</h1>
+    </div>
+    <div class="section">
+      <div class="section-inner">
+        <div class="works-grid" style="gap:40px 20px;">
+
+          <a class="work-card anim d1" onclick="">
+            <div class="work-thumb"><div class="work-thumb-bg t-ugc"><div class="play-btn"></div></div></div>
+            <div class="work-info">
+              <div><div class="work-title">UGC Ads Vol. 1</div><div class="work-sub">Product · 2024</div></div>
+              <span class="work-arrow">↗</span>
+            </div>
+          </a>
+
+          <a class="work-card anim d2" onclick="">
+            <div class="work-thumb"><div class="work-thumb-bg t-shorts"><div class="play-btn"></div></div></div>
+            <div class="work-info">
+              <div><div class="work-title">YouTube Shorts</div><div class="work-sub">Growth · 2024</div></div>
+              <span class="work-arrow">↗</span>
+            </div>
+          </a>
+
+          <a class="work-card anim d3" onclick="">
+            <div class="work-thumb"><div class="work-thumb-bg t-fitness"><div class="play-btn"></div></div></div>
+            <div class="work-info">
+              <div><div class="work-title">Fitness Reels</div><div class="work-sub">Health · 2024</div></div>
+              <span class="work-arrow">↗</span>
+            </div>
+          </a>
+
+          <a class="work-card anim d4" onclick="">
+            <div class="work-thumb"><div class="work-thumb-bg t-podcast"><div class="play-btn"></div></div></div>
+            <div class="work-info">
+              <div><div class="work-title">Podcast Clips</div><div class="work-sub">Audio · 2024</div></div>
+              <span class="work-arrow">↗</span>
+            </div>
+          </a>
+
+          <a class="work-card anim d1" onclick="">
+            <div class="work-thumb"><div class="work-thumb-bg t-collab"><div class="play-btn"></div></div></div>
+            <div class="work-info">
+              <div><div class="work-title">Creator Collab</div><div class="work-sub">Lifestyle · 2025</div></div>
+              <span class="work-arrow">↗</span>
+            </div>
+          </a>
+
+          <a class="work-card anim d2" onclick="">
+            <div class="work-thumb"><div class="work-thumb-bg t-brand"><div class="play-btn"></div></div></div>
+            <div class="work-info">
+              <div><div class="work-title">Brand Campaign</div><div class="work-sub">E-Commerce · 2025</div></div>
+              <span class="work-arrow">↗</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="footer-cta-section">
+        <div class="footer-bottom">
+          <span class="footer-copy">©2026</span>
+          <a class="footer-cta-link" onclick="nav('contact')">Get in touch →</a>
+        </div>
+      </div>
+    </footer>
+  </div><!-- /page-works -->
+
+  <!-- ==================== PACKAGES ==================== -->
+  <div class="page" id="page-packages">
+    <div class="page-hero">
+      <h1 class="page-hero-title">Packages</h1>
+      <p class="page-hero-sub">Three tiers built for creators and brands at every stage of growth.</p>
+    </div>
+    <div class="section">
+      <div class="section-inner">
+        <div class="services-grid">
+
+          <div class="service-card anim d1">
+            <div class="service-thumb"><div class="service-thumb-inner t-ugc"></div></div>
+            <div class="service-body">
+              <div class="service-header"><span class="service-title">Starter</span><span class="service-price">₹ 8,999</span></div>
+              <p class="service-desc">Perfect for creators just starting out. Clean, punchy edits with captions optimised for the first 3 seconds.</p>
+              <div class="service-tags">
+                <span class="service-tag">30 Videos</span><span class="service-tag">Basic Editing</span><span class="service-tag">Captions</span><span class="service-tag">3 Revisions</span>
+              </div>
+              <a class="service-cta" onclick="nav('contact')">Order Now →</a>
+            </div>
+          </div>
+
+          <div class="service-card service-featured anim d2">
+            <div class="service-thumb"><div class="service-thumb-inner t-shorts"></div></div>
+            <div class="service-body">
+              <div class="service-header"><span class="service-title">Growth</span><span class="service-price">₹ 15,000</span></div>
+              <p class="service-desc">For brands scaling fast. 30 reels in 30 days with retention-optimised pacing, platform-native formats, and better hooks.</p>
+              <div class="service-tags">
+                <span class="service-tag">30 Reels / 30 Days</span><span class="service-tag">Captions + Pacing</span><span class="service-tag">Better Hooks</span><span class="service-tag">Platform Formats</span>
+              </div>
+              <a class="service-cta" onclick="nav('contact')">Order Now →</a>
+            </div>
+          </div>
+
+          <div class="service-card anim d3">
+            <div class="service-thumb"><div class="service-thumb-inner t-fitness"></div></div>
+            <div class="service-body">
+              <div class="service-header"><span class="service-title">Pro</span><span class="service-price">₹ 30,000</span></div>
+              <p class="service-desc">Full creative partnership. Script strategy, reference-based direction, and two polished revisions per reel.</p>
+              <div class="service-tags">
+                <span class="service-tag">30 Reels</span><span class="service-tag">Script + References</span><span class="service-tag">2 Revisions</span><span class="service-tag">Creative Direction</span>
+              </div>
+              <a class="service-cta" onclick="nav('contact')">Order Now →</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="footer-cta-section">
+        <div class="footer-bottom">
+          <span class="footer-copy">©2026</span>
+          <a class="footer-cta-link" onclick="nav('contact')">Book a Free Consultation →</a>
+        </div>
+      </div>
+    </footer>
+  </div><!-- /page-packages -->
+
+  <!-- ==================== CONTACT ==================== -->
+  <div class="page" id="page-contact">
+    <div class="page-hero">
+      <h1 class="page-hero-title">Contact</h1>
+      <p class="page-hero-sub">Let's create something that stops the scroll. I'd love to hear about your project — big brand or solo creator.</p>
+    </div>
+    <div class="contact-layout">
+      <div class="contact-left">
+        <div class="contact-group anim d1">
+          <span class="contact-group-label">Email & WhatsApp</span>
+          <a class="contact-item" href="mailto:hi@yuvank.com">hi@yuvank.com</a>
+          <a class="contact-item" href="#">+91 XXXXX XXXXX</a>
+        </div>
+        <div class="contact-group anim d2">
+          <span class="contact-group-label">Book a Call</span>
+          <a class="contact-item" href="#">Calendly →</a>
+        </div>
+        <div class="contact-group anim d3">
+          <span class="contact-group-label">Socials</span>
+          <a class="contact-item" href="#">Instagram</a>
+          <a class="contact-item" href="#">YouTube</a>
+          <a class="contact-item" href="#">WhatsApp</a>
+        </div>
+        <div class="contact-group anim d4">
+          <span class="contact-group-label">Based in</span>
+          <span class="contact-item" style="cursor:default;">Pune, Maharashtra<br/>India</span>
+        </div>
+      </div>
+      <div class="contact-right">
+        <div class="contact-photo">
+          <!-- Replace with: <img src="your-photo.jpg" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;filter:grayscale(20%)"/> -->
+          <span class="contact-photo-text">Add your photo here</span>
+        </div>
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="footer-cta-section">
+        <div class="footer-bottom">
+          <span class="footer-copy">©2026</span>
+          <span class="footer-copy">Yuvank© — Short-Form Video Editor · Pune, India</span>
+        </div>
+      </div>
+    </footer>
+  </div><!-- /page-contact -->
+
+</div><!-- /main -->
+
+<script>
+/* ---- NAV ---- */
+function nav(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById('page-' + page);
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('dim'));
+  const nl = document.getElementById('nl-' + page);
+  if (nl) { nl.classList.remove('dim'); }
+  document.querySelectorAll('.nav-link:not(#nl-' + page + ')').forEach(l => l.classList.add('dim'));
+  document.getElementById('mobileMenu').classList.remove('open');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // re-trigger animations
+  setTimeout(() => {
+    document.querySelectorAll('#page-' + page + ' .anim').forEach(el => {
+      el.classList.remove('visible');
+      void el.offsetHeight;
+    });
+    triggerAnims();
+  }, 50);
+  return false;
+}
+
+/* ---- MOBILE MENU ---- */
+document.getElementById('menuOpen').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.add('open');
+});
+document.getElementById('menuClose').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.remove('open');
+});
+
+/* ---- SCROLL REVEAL ---- */
+function triggerAnims() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.anim:not(.visible)').forEach(el => observer.observe(el));
+}
+triggerAnims();
+
+/* ---- HERO PARALLAX ---- */
+window.addEventListener('scroll', () => {
+  const heroSticky = document.querySelector('.hero-sticky');
+  if (heroSticky) {
+    const t = window.scrollY;
+    heroSticky.querySelector('.hero-content').style.transform = `translateY(${t * 0.18}px)`;
+    heroSticky.querySelector('.hero-content').style.opacity = Math.max(0, 1 - t / (window.innerHeight * 0.7));
+  }
+}, { passive: true });
+
+/* ---- SET HOME NAV ACTIVE ---- */
+document.querySelectorAll('.nav-link:not(#nl-home)').forEach(l => l.classList.add('dim'));
+</script>
+</body>
+</html>
